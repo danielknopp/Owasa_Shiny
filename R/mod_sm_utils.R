@@ -21,7 +21,7 @@ get_sm_map <- function() {
       baseGroups = names(data),
       options = leaflet::layersControlOptions(collapsed = FALSE),
     ) %>%
-    addLegend(pal=pal, values=values(data), title = "Soil Moisture [vol.]") %>%
+    addLegend(pal=pal, values=raster::values(data), title = "Soil Moisture [vol.]") %>%
     leaflet.extras::addDrawToolbar(targetGroup = "Features",
                                    polylineOptions=FALSE,
                                    rectangleOptions = "Features",

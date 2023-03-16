@@ -25,7 +25,7 @@ get_prec_map <- function() {
       baseGroups = names(data),
       options = leaflet::layersControlOptions(collapsed = FALSE),
     ) %>%
-    addLegend(pal=pal, values=values(data), title = "Precipitation [mm]") %>%
+    addLegend(pal=pal, values=raster::values(data), title = "Precipitation [mm]") %>%
     # htmlwidgets::onRender("function() {
     #                       $('.leaflet-control-layers-overlays').prepend('<label style=\"text-align:center\"> <b> Layers </b> </label>');
     #                       }")  %>%

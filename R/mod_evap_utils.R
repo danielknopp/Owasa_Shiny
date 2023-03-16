@@ -21,7 +21,7 @@ get_evap_map <- function() {
       baseGroups = names(data),
       options = leaflet::layersControlOptions(collapsed = FALSE),
     ) %>%
-    addLegend(pal=pal, values=values(data), title = "Evaporation [mm]") %>%
+    addLegend(pal=pal, values=raster::values(data), title = "Evaporation [mm]") %>%
     leaflet.extras::addDrawToolbar(targetGroup = "Features",
                                    polylineOptions=FALSE,
                                    rectangleOptions = "Features",
