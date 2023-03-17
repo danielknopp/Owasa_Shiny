@@ -22,9 +22,9 @@ get_evap_map <- function() {
       options = leaflet::layersControlOptions(collapsed = FALSE),
     ) %>%
     addLegend(pal=pal, values=raster::values(data), title = "Evaporation [mm]") %>%
-    htmlwidgets::onRender("function() {
-                          $('.leaflet-control-layers-overlays').prepend('<label style=\"text-align:center\"> <b> E products </b> </label>');
-                          }")  %>%
+    # htmlwidgets::onRender("function() {
+    #                       $('.leaflet-control-layers-overlays').prepend('<label style=\"text-align:center\"> <b> E products </b> </label>');
+    #                       }")  %>%
     leaflet.extras::addDrawToolbar(targetGroup = "Features",
                                    polylineOptions=FALSE,
                                    rectangleOptions = "Features",

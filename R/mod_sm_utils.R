@@ -22,9 +22,9 @@ get_sm_map <- function() {
       options = leaflet::layersControlOptions(collapsed = FALSE),
     ) %>%
     addLegend(pal=pal, values=raster::values(data), title = "Soil Moisture [vol.]") %>%
-    htmlwidgets::onRender("function() {
-                          $('.leaflet-control-layers-overlays').prepend('<label style=\"text-align:center\"> <b> SM products </b> </label>');
-                          }")  %>%
+    # htmlwidgets::onRender("function() {
+    #                       $('.leaflet-control-layers-overlays').prepend('<label style=\"text-align:center\"> <b> SM products </b> </label>');
+    #                       }")  %>%
     leaflet.extras::addDrawToolbar(targetGroup = "Features",
                                    polylineOptions=FALSE,
                                    rectangleOptions = "Features",
