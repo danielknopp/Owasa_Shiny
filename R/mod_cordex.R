@@ -26,15 +26,14 @@ mod_cordex_ui <- function(id) {
       sidebarPanel(
                    tags$div(id = 'cord_data',
                             span(tags$i(h5(textOutput(ns("plot_cord_caption")))),
-                                 style="color:#045a8d"),
-                            selectInput(ns("Input_variable"), label = "Select variable to display", choices = c("Precipitation", "Temperature"), selected = TRUE),
-                            manipulateWidget::combineWidgetsOutput(ns("plot_cord_annual"), width = "100%", height = "300px"),
-                            
-                            column(4, selectInput(ns("Period"), label = "Period", choices = c("Precipitation", "Temperature"), selected = TRUE)),
-                            manipulateWidget::combineWidgetsOutput(ns("plot_monthly_period"), width = "100%", height = "300px")
-                   ),
-
+                                 style="color:#045a8d")),
                    
+                   selectInput(ns("Input_variable"), label = "Select variable to display", choices = c("Precipitation", "Temperature"), selected = TRUE),
+                            
+                   selectInput(ns("Period"), label = "Period (for seasonality plot)", choices = c("2006-2020", "2021-2040",
+                                                                           "2041-2060", "2061-2080",
+                                                                           "2081-2100"), selected = TRUE),
+                   manipulateWidget::combineWidgetsOutput(ns("plot_monthly_period"), width = "100%", height = "500px")
                    
       ),
       mainPanel(leaflet::leafletOutput(ns("cordex_map"), height = "925px", width = "100%"))
@@ -61,15 +60,20 @@ mod_cordex_server <- function(id, map) {
         return(coords)
       })
       
-      # output$plot_cord <- manipulateWidget::renderCombineWidgets({
-      #   
-      #   req(input$cordex_map_draw_new_feature)
-      #   req(input$Input_variable)
-      #   
-      #   get_prec_plot(vls = OWASA::get_prec_values(product = input$Prec_prod,
-      #                                              x = selected_cell()$x, y = selected_cell()$y))
-      #   
-      # })
+      
+      output$plot_monthly_period <- manipulateWidget::renderCombineWidgets({
+        
+        req(input$cordex_map_draw_new_feature)
+        req(input$Input_variable)
+        req(input$Period)
+        
+        get_cordex_monthly_plot(vls_monthly = OWASA::get_cordex_monthly_values(variable = input$Input_variable,
+                                                                       period = input$Period,
+                                                                     x = selected_cell()$x, y = selected_cell()$y),
+                                vls_annual = OWASA::get_cordex_annual_values(variable = input$Input_variable,
+                                                                             x = selected_cell()$x, y = selected_cell()$y))
+        
+      })
       
       # Output object that contains the caption of the selected station
       output$plot_cord_caption <- renderText({
