@@ -24,22 +24,20 @@ mod_cordex_ui <- function(id) {
   tagList(
     sidebarLayout(
       sidebarPanel(
-                   selectInput(ns("Input_Package"), label = "Select the implementation", choices = c("SPEI", "SCI"), selected = TRUE),
-                   tags$div(id = 'demo',
-                            manipulateWidget::combineWidgetsOutput(ns("plot_daily"), width = "100%", height = "250px"),
-                            manipulateWidget::combineWidgetsOutput(ns("plot_monthly"), width = "100%", height = "200px"),
-                            fluidRow(
-                              column(4, numericInput(ns("H"), label = "Disturbance", value = NULL, min = 0, max =7, step = 0.25)),
-                              column(4, numericInput(ns("DaysMOVA"), label = "Days for MA", value = NULL, min = 5, max = 90)),
-                              column(4, selectInput(ns("Filter"), label = "Smoother?", choices = c("KF", "MA"), selected = TRUE))
-                            ),
-                            manipulateWidget::combineWidgetsOutput(ns("plot_smooth"), width = "100%", height = "270px")
+                   tags$div(id = 'cord_data',
+                            span(tags$i(h5(textOutput(ns("plot_cord_caption")))),
+                                 style="color:#045a8d"),
+                            selectInput(ns("Input_variable"), label = "Select variable to display", choices = c("Precipitation", "Temperature"), selected = TRUE),
+                            manipulateWidget::combineWidgetsOutput(ns("plot_cord_annual"), width = "100%", height = "300px"),
+                            
+                            column(4, selectInput(ns("Period"), label = "Period", choices = c("Precipitation", "Temperature"), selected = TRUE)),
+                            manipulateWidget::combineWidgetsOutput(ns("plot_monthly_period"), width = "100%", height = "300px")
                    ),
 
                    
                    
       ),
-      mainPanel(leaflet::leafletOutput(ns("station_map"),height = "925px", width = "100%"))
+      mainPanel(leaflet::leafletOutput(ns("cordex_map"),height = "925px", width = "100%"))
     )
   )
   
@@ -51,59 +49,35 @@ mod_cordex_server <- function(id, map) {
   moduleServer(
     id,
     function(input, output, session) {
-      # output$station_map <- leaflet::renderLeaflet(map)
-      # 
-      # # Reactive object to store the information of the selected station
-      # selected_cell <- eventReactive(input$station_map_draw_new_feature, {
-      #   
-      #   coords <- data.frame(x = input$station_map_draw_new_feature$geometry$coordinates[[1]],
-      #                        y = input$station_map_draw_new_feature$geometry$coordinates[[2]])          
-      #   
-      #   return(coords)
-      # })
-      # 
-      # # Output object that contains the daily interactive graph. The function
-      # output$plot_shape_daily <- dygraphs::renderDygraph({
-      #   req(input$station_map_draw_new_feature)
-      #   req(input$Input_Package)
-      #   get_plot(vls = SPIGamma::get_values(x = selected_cell()$x, y = selected_cell()$y), 
-      #            package = input$Input_Package,
-      #            parameter = "shape",
-      #            scale = "Daily")
-      # })
-      # 
-      # # Output object that contains the daily interactive graph. The function
-      # output$plot_daily <- manipulateWidget::renderCombineWidgets({
-      #   req(input$station_map_draw_new_feature)
-      #   req(input$Input_Package)
-      #   get_combined_plot(vls = SPIGamma::get_values(x = selected_cell()$x, y = selected_cell()$y), 
-      #                     package = input$Input_Package,
-      #                     scale = "Daily")
-      #   
-      # })
-      # 
-      # # Output object that contains the monthly interactive graph. The function
-      # output$plot_monthly <- manipulateWidget::renderCombineWidgets({
-      #   req(input$station_map_draw_new_feature)
-      #   req(input$Input_Package)
-      #   get_combined_plot(vls = SPIGamma::get_values(x = selected_cell()$x, y = selected_cell()$y), 
-      #                     package = input$Input_Package,
-      #                     scale = "Monthly")
-      #   
-      # })
-      # 
-      # output$plot_smooth <- manipulateWidget::renderCombineWidgets({
-      #   req(input$station_map_draw_new_feature)
-      #   req(input$Input_Package)
-      #   req(input$H)
-      #   req(input$DaysMOVA)
-      #   get_combined_smoothed_plot(vls = SPIGamma::get_values(x = selected_cell()$x, y = selected_cell()$y), 
-      #                              package = input$Input_Package, 
-      #                              H = input$H, 
-      #                              mova = input$DaysMOVA,
-      #                              var = input$Filter)
+
+      output$cordex_map <- leaflet::renderLeaflet(map)
+      
+      # Reactive object to store the information of the selected station
+      selected_cell <- eventReactive(input$cordex_map_draw_new_feature, {
         
+        coords <- data.frame(x = input$cordex_map_draw_new_feature$geometry$coordinates[[1]],
+                             y = input$cordex_map_draw_new_feature$geometry$coordinates[[2]])  
+        
+        return(coords)
+      })
+      
+      # output$plot_cord <- manipulateWidget::renderCombineWidgets({
+      #   
+      #   req(input$cordex_map_draw_new_feature)
+      #   req(input$Input_variable)
+      #   
+      #   get_prec_plot(vls = OWASA::get_prec_values(product = input$Prec_prod,
+      #                                              x = selected_cell()$x, y = selected_cell()$y))
+      #   
       # })
+      
+      # Output object that contains the caption of the selected station
+      output$plot_cord_caption <- renderText({
+        glue::glue("The following window displays precipitation and temperature data for the RCP4.5 and RCP8.5 projections from CORDEX using
+        the Regional Climate Model (CCCma-CanRSM4) from the Canadian Center for Climate Modelling and Analysis using the ensemble member r1i1p1.
+        Please select a point on the map to visualise the annual P or T and the mean monthly precipitation or temperature (using the drawing tools of the map).")
+      })
+      
       
     }
   )

@@ -6,34 +6,57 @@
 #' @import leaflet
 get_cordex_map <- function() {
 
-  # data  <- import_data()
-  # shape_sci  <- raster::raster(data$sci_shape_daily[[1]])
-  # shape_spei <- raster::raster(data$spei_shape_daily[[1]])
-  # 
-  # shape <- raster::stack(shape_sci, shape_spei)
-  # shape[shape > 150] <- 150 #  hack to visualise the colors
+  data  <- import_cordex_map_data()
   
-  # pal <- leaflet::colorNumeric(c("#0C2C84", "#41B6C4", "#FFFFCC"), raster::getValues(shape),
-  #                     na.color = "transparent")
+  pal_prec <- leaflet::colorNumeric(c("#41B6C4", "#0C2C84"), 
+                               raster::getValues(data),
+                               na.color = "transparent")
+  
+  pal_temp <- leaflet::colorNumeric(c("lightgoldenrod1", "indianred2", "firebrick"), 
+                               raster::getValues(data),
+                               na.color = "transparent")
+  
   
   leaflet::leaflet() %>%
     leaflet::addProviderTiles(leaflet::providers$CartoDB.Positron) %>%
-    # leaflet::addRasterImage(shape[[2]], colors = pal, opacity = 0.5, group = "SPEI") %>%
-    # leaflet::addRasterImage(shape[[1]], colors = pal, opacity = 0.5, group = "SCI") %>%
-    # leaflet::addLegend(pal = pal, values = raster::getValues(shape), title = "Shape parameter") %>%
-    # leaflet::addLayersControl(
-    #   baseGroups = c("SPEI", "SCI"),
-    #   options = leaflet::layersControlOptions(collapsed = FALSE),
-    # ) %>%
-    htmlwidgets::onRender("function() {
-                          $('.leaflet-control-layers-overlays').prepend('<label style=\"text-align:center\"> <b> Layers </b> </label>');
-                          }")  %>%
+    leaflet::addRasterImage(data[[1]], colors = pal_prec, opacity = 0.5, group = names(data)[1]) %>%
+    leaflet::addRasterImage(data[[2]], colors = pal_prec, opacity = 0.5, group = names(data)[2]) %>%
+    leaflet::addRasterImage(data[[3]], colors = pal_temp, opacity = 0.5, group = names(data)[3]) %>%
+    leaflet::addRasterImage(data[[4]], colors = pal_temp, opacity = 0.5, group = names(data)[4]) %>%
+    leaflet::addLayersControl(
+      baseGroups = names(data),
+      options = leaflet::layersControlOptions(collapsed = FALSE),
+    ) %>%
+    addLegend(pal=pal_prec, values=raster::values(data[[1:2]]), title = "Precipitation [mm]") %>%
+    addLegend(pal=pal_temp, values=raster::values(data[[3:4]]), title = "Temperature [K]") %>%
+
     leaflet.extras::addDrawToolbar(targetGroup = "Features",
-                                                              polylineOptions=FALSE,
-                                                              rectangleOptions = "Features",
-                                                              markerOptions=FALSE,
-                                                              circleOptions=FALSE,
-                                                              position = "topleft", 
-                                                              editOptions = leaflet.extras::editToolbarOptions(selectedPathOptions = 
-                                                                                                                 leaflet.extras::selectedPathOptions()))
+                                   polylineOptions=FALSE,
+                                   rectangleOptions = "Features",
+                                   markerOptions=FALSE,
+                                   circleOptions=FALSE,
+                                   position = "topleft", 
+                                   editOptions = leaflet.extras::editToolbarOptions(selectedPathOptions = 
+                                                                                      leaflet.extras::selectedPathOptions()))
+}
+
+
+
+#' Import data for CORDEX map
+#'
+#' @return
+#' @export
+#'
+#' @examples
+import_cordex_map_data <- function(){
+  
+  file_path <- "./data/CORDEX_products/Map"
+  
+  files <- list.files(file_path, full.names = TRUE)
+  names <- tools::file_path_sans_ext(basename(files))
+  
+  res        <- raster::stack(files)
+  names(res) <- names
+  
+  return(res)
 }

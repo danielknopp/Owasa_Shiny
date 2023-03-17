@@ -31,6 +31,7 @@ owasaApp <- function(...) {
   prec_map    <- get_prec_map()
   evap_map    <- get_evap_map()
   sm_map      <- get_sm_map()
+  cordex_map  <- get_cordex_map()
 
   # UI side of the application
   ui <- fluidPage(
