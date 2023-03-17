@@ -37,7 +37,7 @@ mod_cordex_ui <- function(id) {
                    
                    
       ),
-      mainPanel(leaflet::leafletOutput(ns("cordex_map"),height = "925px", width = "100%"))
+      mainPanel(leaflet::leafletOutput(ns("cordex_map"), height = "925px", width = "100%"))
     )
   )
   

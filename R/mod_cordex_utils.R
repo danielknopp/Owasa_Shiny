@@ -29,7 +29,9 @@ get_cordex_map <- function() {
     ) %>%
     addLegend(pal=pal_prec, values=raster::values(data[[1:2]]), title = "Precipitation [mm]") %>%
     addLegend(pal=pal_temp, values=raster::values(data[[3:4]]), title = "Temperature [K]") %>%
-
+    # htmlwidgets::onRender("function() {
+    #                       $('.leaflet-control-layers-overlays').prepend('<label style=\"text-align:center\"> <b> CORDEX projections </b> </label>');
+    #                       }")  %>%
     leaflet.extras::addDrawToolbar(targetGroup = "Features",
                                    polylineOptions=FALSE,
                                    rectangleOptions = "Features",
