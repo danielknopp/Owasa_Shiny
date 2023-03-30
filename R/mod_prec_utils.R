@@ -20,7 +20,6 @@ get_prec_map <- function() {
     leaflet::addRasterImage(data[[4]], colors = pal, opacity = 0.5, group = names(data)[4]) %>%
     leaflet::addRasterImage(data[[5]], colors = pal, opacity = 0.5, group = names(data)[5]) %>%
     leaflet::addRasterImage(data[[6]], colors = pal, opacity = 0.5, group = names(data)[6]) %>%
-    leaflet::addRasterImage(data[[7]], colors = pal, opacity = 0.5, group = names(data)[7]) %>%
     leaflet::addLayersControl(
       baseGroups = names(data),
       options = leaflet::layersControlOptions(collapsed = FALSE),
