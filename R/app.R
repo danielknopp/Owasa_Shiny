@@ -46,6 +46,10 @@ owasaApp <- function(...) {
       # About this site panel
       tabPanel("About this site",
                includeMarkdown(system.file('extdata/about.md', package='OWASA'))),
+      
+      # how to use this app panel
+      tabPanel("How to use this app?",
+               includeMarkdown(system.file('extdata/howto.md', package='OWASA'))),
 
       # CORDEX panel
       tabPanel("CORDEX projections", id = "Cordex", value = "Cordex",
