@@ -143,8 +143,8 @@ get_cordex_monthly <- function(variable, period){
                    "2061-2080" = "2061_2080",
                    "2081-2100" = "2081_2100")
   
-  an45 <- paste0("./data/CORDEX_products/Mean_monthly/mean_", product, "_rcp45__", prd, ".rds")
-  an85 <- paste0("./data/CORDEX_products/Mean_monthly/mean_", product, "_rcp85__", prd, ".rds")
+  an45 <- paste0("./data/CORDEX_products/Mean_monthly/mean_", product, "_rcp45_", prd, ".rds")
+  an85 <- paste0("./data/CORDEX_products/Mean_monthly/mean_", product, "_rcp85_", prd, ".rds")
   
   an45 <- readRDS(an45)
   an85 <- readRDS(an85)
