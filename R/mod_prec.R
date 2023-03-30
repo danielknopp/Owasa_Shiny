@@ -23,7 +23,7 @@ mod_prec_ui <- function(id) {
     sidebarLayout(
       sidebarPanel(
         selectInput(ns("Prec_prod"), label = "Select the P product", 
-                    choices = c("CHIRPSv2", "CMORPHv1", "ERA5", "ERA5 Land", 
+                    choices = c("CHIRPSv2", "ERA5", "ERA5 Land", 
                                 "MSWEPv2.8", "PERSIANN-CDR", "PERSIANN-CCS-CDR"), selected = TRUE),
         tags$div(id = 'p_data',
                  span(tags$i(h4(textOutput(ns("plot_prec_caption")))),
