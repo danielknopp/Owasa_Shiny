@@ -117,6 +117,11 @@ get_sm_values <- function(product, x, y){
 #' @examples
 get_sm_plot <- function(vls){
   
+  # test character
+  nm <- names(vls$annual)[1] 
+  if(nchar(nm) == 5)
+    names(vls$annual) <- substr(names(vls$annual), 2, 5)
+  
   # Creating data frame for annual dates
   annual_dates <- as.Date(paste0(names(vls$annual), "-01-01"))
   annual       <- data.frame(vals = as.numeric(vls$annual))
