@@ -36,7 +36,7 @@ mod_cordex_ui <- function(id) {
                    manipulateWidget::combineWidgetsOutput(ns("plot_monthly_period"), width = "100%", height = "500px")
                    
       ),
-      mainPanel(leaflet::leafletOutput(ns("cordex_map"), height = "925px", width = "100%"))
+      mainPanel(leaflet::leafletOutput(ns("cordex_map"), height = "800px", width = "100%"))
     )
   )
   
@@ -67,10 +67,10 @@ mod_cordex_server <- function(id, map) {
         req(input$Input_variable)
         req(input$Period)
         
-        get_cordex_monthly_plot(vls_monthly = OWASA::get_cordex_monthly_values(variable = input$Input_variable,
+        get_cordex_monthly_plot(vls_monthly = get_cordex_monthly_values(variable = input$Input_variable,
                                                                        period = input$Period,
                                                                      x = selected_cell()$x, y = selected_cell()$y),
-                                vls_annual = OWASA::get_cordex_annual_values(variable = input$Input_variable,
+                                vls_annual = get_cordex_annual_values(variable = input$Input_variable,
                                                                              x = selected_cell()$x, y = selected_cell()$y))
         
       })

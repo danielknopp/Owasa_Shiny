@@ -35,7 +35,7 @@ mod_prec_ui <- function(id) {
         
         
       ),
-      mainPanel(leaflet::leafletOutput(ns("prec_map"),height = "925px", width = "100%"))
+      mainPanel(leaflet::leafletOutput(ns("prec_map"),height = "800px", width = "100%"))
     )
   )
   
@@ -63,7 +63,7 @@ mod_prec_server <- function(id, map) {
 
         req(input$prec_map_draw_new_feature)
         req(input$Prec_prod)
-        get_prec_plot(vls = OWASA::get_prec_values(product = input$Prec_prod,
+        get_prec_plot(vls = get_prec_values(product = input$Prec_prod,
                                                    x = selected_cell()$x, y = selected_cell()$y))
         
       })

@@ -34,7 +34,7 @@ mod_evap_ui <- function(id) {
         
         
       ),
-      mainPanel(leaflet::leafletOutput(ns("evap_map"),height = "925px", width = "100%"))
+      mainPanel(leaflet::leafletOutput(ns("evap_map"),height = "800px", width = "100%"))
     )
   )
   
@@ -58,11 +58,12 @@ mod_evap_server <- function(id, map) {
         return(coords)
       })
       
+      
       output$plot_E <- manipulateWidget::renderCombineWidgets({
         
         req(input$evap_map_draw_new_feature)
         req(input$Evap_prod)
-        get_evap_plot(vls = OWASA::get_evap_values(product = input$Evap_prod,
+        get_evap_plot(vls = get_evap_values(product = input$Evap_prod,
                                                    x = selected_cell()$x, y = selected_cell()$y))
         
       })

@@ -21,7 +21,7 @@ get_sm_map <- function() {
       baseGroups = names(data),
       options = leaflet::layersControlOptions(collapsed = FALSE),
     ) %>%
-    addLegend(pal=pal, values=raster::values(data), title = "Soil Moisture [vol.]") %>%
+    leaflet::addLegend(pal=pal, values=raster::values(data), title = "Soil Moisture [vol.]") %>%
     # htmlwidgets::onRender("function() {
     #                       $('.leaflet-control-layers-overlays').prepend('<label style=\"text-align:center\"> <b> SM products </b> </label>');
     #                       }")  %>%
@@ -44,7 +44,7 @@ get_sm_map <- function() {
 #' @examples
 get_sm_map_data <- function(){
   
-  file_path <- "./data/SM_products/Map/"
+  file_path <- "data/SM_products/Map/"
   
   files <- list.files(file_path, full.names = TRUE)
   names <- tools::file_path_sans_ext(basename(files))
@@ -64,8 +64,8 @@ get_sm_map_data <- function(){
 #' @examples
 get_sm_data <- function(product){
   
-  an <- paste0("./data/SM_products/Annual/", product, ".rds")
-  mm <- paste0("./data/SM_products/Mean_monthly/", product, ".rds")
+  an <- paste0("data/SM_products/Annual/", product, ".rds")
+  mm <- paste0("data/SM_products/Mean_monthly/", product, ".rds")
   
   an <- readRDS(an)
   mm <- readRDS(mm)
@@ -116,6 +116,11 @@ get_sm_values <- function(product, x, y){
 #'
 #' @examples
 get_sm_plot <- function(vls){
+  
+  # test character
+  nm <- names(vls$annual)[1] 
+  if(nchar(nm) == 5)
+    names(vls$annual) <- substr(names(vls$annual), 2, 5)
   
   # Creating data frame for annual dates
   annual_dates <- as.Date(paste0(names(vls$annual), "-01-01"))

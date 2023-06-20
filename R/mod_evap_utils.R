@@ -21,7 +21,7 @@ get_evap_map <- function() {
       baseGroups = names(data),
       options = leaflet::layersControlOptions(collapsed = FALSE),
     ) %>%
-    addLegend(pal=pal, values=raster::values(data), title = "Evaporation [mm]") %>%
+    leaflet::addLegend(pal=pal, values=raster::values(data), title = "Evaporation [mm]") %>%
     # htmlwidgets::onRender("function() {
     #                       $('.leaflet-control-layers-overlays').prepend('<label style=\"text-align:center\"> <b> E products </b> </label>');
     #                       }")  %>%
@@ -44,11 +44,10 @@ get_evap_map <- function() {
 #' @examples
 get_evap_map_data <- function(){
   
-  file_path <- "./data/E_products/Map/"
+  file_path <- "data/E_products/Map/"
   
   files <- list.files(file_path, full.names = TRUE)
   names <- tools::file_path_sans_ext(basename(files))
-  
   res        <- raster::stack(files)
   names(res) <- names
   
@@ -64,8 +63,8 @@ get_evap_map_data <- function(){
 #' @examples
 get_evap_data <- function(product){
   
-  an <- paste0("./data/E_products/Annual/", product, ".rds")
-  mm <- paste0("./data/E_products/Mean_monthly/", product, ".rds")
+  an <- paste0("data/E_products/Annual/", product, ".rds")
+  mm <- paste0("data/E_products/Mean_monthly/", product, ".rds")
   
   an <- readRDS(an)
   mm <- readRDS(mm)
@@ -99,6 +98,7 @@ get_evap_values <- function(product, x, y){
   data  <- get_evap_data(product)
   shp   <- data.frame(x = x, y = y)
   shp   <- terra::vect(shp, geom = c("x", "y"))
+  
   
   vals_monthly_evap  <- terra::extract(data$mean_monthly, shp)[-1]
   vals_annual_evap   <- terra::extract(data$annual, shp)[-1]

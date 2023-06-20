@@ -27,8 +27,8 @@ get_cordex_map <- function() {
       baseGroups = names(data),
       options = leaflet::layersControlOptions(collapsed = FALSE),
     ) %>%
-    addLegend(pal=pal_prec, values=raster::values(data[[1:2]]), title = "Precipitation [mm]") %>%
-    addLegend(pal=pal_temp, values=raster::values(data[[3:4]]), title = "Temperature [K]") %>%
+    leaflet::addLegend(pal=pal_prec, values=raster::values(data[[1:2]]), title = "Precipitation [mm]") %>%
+    leaflet::addLegend(pal=pal_temp, values=raster::values(data[[3:4]]), title = "Temperature [K]") %>%
     # htmlwidgets::onRender("function() {
     #                       $('.leaflet-control-layers-overlays').prepend('<label style=\"text-align:center\"> <b> CORDEX projections </b> </label>');
     #                       }")  %>%
@@ -52,7 +52,7 @@ get_cordex_map <- function() {
 #' @examples
 import_cordex_map_data <- function(){
   
-  file_path <- "./data/CORDEX_products/Map"
+  file_path <- "data/CORDEX_products/Map"
   
   files <- list.files(file_path, full.names = TRUE)
   names <- tools::file_path_sans_ext(basename(files))
@@ -76,8 +76,8 @@ get_cordex_annual <- function(variable){
                     "Temperature" = "temp",
                     "Precipitation" = "prec")
   
-  an45 <- paste0("./data/CORDEX_products/Annual/y_", product, "_rcp45__2006_2100.rds")
-  an85 <- paste0("./data/CORDEX_products/Annual/y_", product, "_rcp85__2006_2100.rds")
+  an45 <- paste0("data/CORDEX_products/Annual/y_", product, "_rcp45__2006_2100.rds")
+  an85 <- paste0("data/CORDEX_products/Annual/y_", product, "_rcp85__2006_2100.rds")
 
   
   an45 <- readRDS(an45)
@@ -143,8 +143,8 @@ get_cordex_monthly <- function(variable, period){
                    "2061-2080" = "2061_2080",
                    "2081-2100" = "2081_2100")
   
-  an45 <- paste0("./data/CORDEX_products/Mean_monthly/mean_", product, "_rcp45_", prd, ".rds")
-  an85 <- paste0("./data/CORDEX_products/Mean_monthly/mean_", product, "_rcp85_", prd, ".rds")
+  an45 <- paste0("data/CORDEX_products/Mean_monthly/mean_", product, "_rcp45_", prd, ".rds")
+  an85 <- paste0("data/CORDEX_products/Mean_monthly/mean_", product, "_rcp85_", prd, ".rds")
   
   an45 <- readRDS(an45)
   an85 <- readRDS(an85)

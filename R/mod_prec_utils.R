@@ -24,7 +24,7 @@ get_prec_map <- function() {
       baseGroups = names(data),
       options = leaflet::layersControlOptions(collapsed = FALSE),
     ) %>%
-    addLegend(pal=pal, values=raster::values(data), title = "Precipitation [mm]") %>%
+    leaflet::addLegend(pal=pal, values=raster::values(data), title = "Precipitation [mm]") %>%
     # htmlwidgets::onRender("function() {
     #                       $('.leaflet-control-layers-overlays').prepend('<label style=\"text-align:center\"> <b> P products </b> </label>');
     #                       }")  %>%
@@ -47,7 +47,7 @@ get_prec_map <- function() {
 #' @examples
 get_prec_map_data <- function(){
   
-  file_path <- "./data/P_products/Map/"
+  file_path <- "data/P_products/Map/"
   
   files <- list.files(file_path, full.names = TRUE)
   names <- tools::file_path_sans_ext(basename(files))
@@ -67,8 +67,8 @@ get_prec_map_data <- function(){
 #' @examples
 get_prec_data <- function(product){
   
-  an <- paste0("./data/P_products/Annual/", product, ".rds")
-  mm <- paste0("./data/P_products/Mean_monthly/", product, ".rds")
+  an <- paste0("data/P_products/Annual/", product, ".rds")
+  mm <- paste0("data/P_products/Mean_monthly/", product, ".rds")
   
   an <- readRDS(an)
   mm <- readRDS(mm)

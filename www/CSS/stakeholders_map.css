@@ -1,0 +1,12 @@
+.leaflet-control-minimap {
+          width: 155px;
+          height: 155px;
+          border: 2px solid #ccc;
+          border-radius: 4px;
+          box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+        }
+.marker-details {
+          font-size: 14px;
+          max-height: 600px;
+          overflow-y: auto;
+          }
